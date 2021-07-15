@@ -1,0 +1,86 @@
+ use stud
+switched to db stud
+> db.Student.aggregate(
+... [
+... {
+... $match:{ Pass:false}
+... },
+... {
+... $group:{_id:"$Name"}
+... }
+... ]
+... );
+{ "_id" : "Sundar" }
+{ "_id" : "Kaif" }
+{ "_id" : "Sanket" }
+{ "_id" : "Strike" }
+{ "_id" : "Taifur" }
+{ "_id" : "Sandeep" }
+{ "_id" : "Pandey" }
+{ "_id" : "Ali" }
+{ "_id" : "Pranjal" }
+{ "_id" : "Sai" }
+{ "_id" : "Avi" }
+> var mapper=function(){
+... emit(this.USN,this.Subject2)
+... };
+> var reducer=function(USN,Subject2)
+uncaught exception: SyntaxError: missing { before function body :
+@(shell):1:34
+> var reducer=function(USN,Subject2){
+... return Array.sum(Subject2)
+... };
+> db.Student.mapReduce(mapper,reducer,{
+... out:"output"
+... });
+{ "result" : "output", "ok" : 1 }
+> db.output.find();
+{ "_id" : 107, "value" : 30 }
+{ "_id" : 111, "value" : 90 }
+{ "_id" : 109, "value" : 44 }
+{ "_id" : 112, "value" : 0 }
+{ "_id" : 118, "value" : 69 }
+{ "_id" : 119, "value" : 20 }
+{ "_id" : 103, "value" : 36 }
+{ "_id" : 101, "value" : 90 }
+{ "_id" : 115, "value" : 22 }
+{ "_id" : 108, "value" : 0 }
+{ "_id" : 113, "value" : 46 }
+{ "_id" : 114, "value" : 69 }
+{ "_id" : 120, "value" : 89 }
+{ "_id" : 104, "value" : 50 }
+{ "_id" : 102, "value" : 90 }
+{ "_id" : 116, "value" : 23 }
+{ "_id" : 105, "value" : 99 }
+{ "_id" : 110, "value" : 27 }
+{ "_id" : 117, "value" : 65 }
+{ "_id" : 106, "value" : 50 }
+> db.Student.aggregate(
+... [
+... {
+... $match:{
+... $and:[
+... {Subject1:{$gt:44}},
+... {Subject2:{$gt:44}}
+... ]
+... }
+... },
+... {
+... $count:"passed"
+... }
+... ]
+... );
+{ "passed" : 5 }
+> db.Student.find(USN:103});
+uncaught exception: SyntaxError: missing ) after argument list :
+@(shell):1:19
+> db.Student.find({USN:103});
+{ "_id" : ObjectId("60f067aa8f810109959c3c04"), "Name" : "Rinkal", "USN" : 103, "Subject1" : 54, "Subject2" : 36, "Subject3" : 50, "Pass" : true }
+> db.results.update({USN:103},{$set:{Subject1:89,Subject2"11}});
+uncaught exception: SyntaxError: "" literal not terminated before end of script :
+@(shell):1:62
+> db.results.update({USN:103},{$set:{Subject1:89,Subject2:11}});
+WriteResult({ "nMatched" : 0, "nUpserted" : 0, "nModified" : 0 })
+> db.Student.find({USN:103});
+{ "_id" : ObjectId("60f067aa8f810109959c3c04"), "Name" : "Rinkal", "USN" : 103, "Subject1" : 54, "Subject2" : 36, "Subject3" : 50, "Pass" : true }
+>
